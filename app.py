@@ -2,6 +2,7 @@
 
 from sudoku import Sudoku
 import gradio as gr
+from datetime import datetime
 
 css = """
 footer {
@@ -16,7 +17,7 @@ def baby_sudoku(size: int = 2, diff: float = 0.5) -> list[list[str]]:
     mstart = ord('\U0001F346')
     map = {i: f"{chr(mstart + i)}" for i in range(1,size**2+1)}
     map[None] = "&nbsp;"
-    s = Sudoku(size).difficulty(diff)
+    s = Sudoku(size, seed=datetime.now().timestamp()).difficulty(diff)
     pictures = [[map[e] for e in row] for row in s.board]
     rows = [row_templ.format(contents="</td><td>".join(row)) for row in pictures]
     return html_templ.format(contents="</tr><tr>".join(rows))
